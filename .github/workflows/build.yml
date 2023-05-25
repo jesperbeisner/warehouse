@@ -1,0 +1,37 @@
+name: "Docker Build Action"
+
+on:
+    push:
+        tags:
+            - "v*"
+
+jobs:
+    docker-build:
+        runs-on: ubuntu-22.04
+
+        steps:
+            -   uses: actions/checkout@v3
+
+            -   name: "Set Docker Meta"
+                id: meta
+                uses: docker/metadata-action@v4
+                with:
+                    images: "ghcr.io/jesperbeisner/oil-warehouse"
+                    flavor: latest=true
+                    tags: type=semver,pattern={{version}}
+
+            -   name: "Login To Image Repository"
+                uses: docker/login-action@v2
+                with:
+                    registry: "ghcr.io"
+                    username: ${{ github.actor }}
+                    password: ${{ secrets.OIL_WAREHOUSE_GHCR_TOKEN }}
+
+            -   name: "Build And Push"
+                uses: docker/build-push-action@v3
+                with:
+                    context: .
+                    file: "Dockerfile"
+                    push: true
+                    tags: ${{ steps.meta.outputs.tags }}
+                    labels: ${{ steps.meta.outputs.labels }}
