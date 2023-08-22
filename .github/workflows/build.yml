@@ -16,7 +16,7 @@ jobs:
                 id: meta
                 uses: docker/metadata-action@v4
                 with:
-                    images: "ghcr.io/jesperbeisner/oil-warehouse"
+                    images: "ghcr.io/jesperbeisner/warehouse"
                     flavor: latest=true
                     tags: type=semver,pattern={{version}}
 
@@ -25,7 +25,7 @@ jobs:
                 with:
                     registry: "ghcr.io"
                     username: ${{ github.actor }}
-                    password: ${{ secrets.OIL_WAREHOUSE_GHCR_TOKEN }}
+                    password: ${{ secrets.WAREHOUSE_GHCR_TOKEN }}
 
             -   name: "Build And Push"
                 uses: docker/build-push-action@v3

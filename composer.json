@@ -1,6 +1,6 @@
 {
-    "name": "jesperbeisner/oil-warehouse",
-    "description": "Little script to do some stuff automatically, not important for anyone else!",
+    "name": "jesperbeisner/warehouse",
+    "description": "Little script to do some stuff automatically ¯\\_(ツ)_/¯",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -12,8 +12,8 @@
     ],
     "require": {
         "php": "^8.2",
-        "symfony/panther": "^2.0",
-        "dbrekelmans/bdi": "^1.0"
+        "symfony/panther": "^2.1",
+        "dbrekelmans/bdi": "^1.0.4"
     },
     "autoload": {
         "psr-4": {

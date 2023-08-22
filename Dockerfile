@@ -7,7 +7,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions && install-php-extensions zip
 
 RUN apk update && apk add --no-cache chromium chromium-chromedriver
 
-WORKDIR /var/www/oil-warehouse
+WORKDIR /var/www/warehouse
 
 COPY . .
 
