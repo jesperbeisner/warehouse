@@ -21,26 +21,6 @@ if ($world === null || $username === null || $password === null || $ntfyTopic ==
 
 $ntfy = new Ntfy($ntfyTopic);
 
-if (false === $config = file_get_contents('https://jesperbeisner.dev/config.json')) {
-    $ntfy->sendErrorMessage('"file_get_contents" für "https://jesperbeisner.dev/config.json" hat keinen String zurückgegeben!');
-
-    exit(1);
-}
-
-$configArray = json_decode($config, true, 512, JSON_THROW_ON_ERROR);
-
-if ($world === 'welt1' && $configArray['welt1'] === false) {
-    $ntfy->sendErrorMessage('Der Welt 1 Container ist nicht gelaufen weil config sagt nein!');
-
-    exit(1);
-}
-
-if ($world === 'welt13' && $configArray['welt13'] === false) {
-    $ntfy->sendErrorMessage('Der Welt 13 Container ist nicht gelaufen weil config sagt nein!');
-
-    exit(1);
-}
-
 $run = false;
 while ($run === false) {
     if (rand(0, 30) === 0) {
@@ -81,7 +61,7 @@ try {
     sleep(rand(2, 5));
     $fieldText = trim($client->findElement(WebDriverBy::cssSelector('td.areadescription'))->getText());
 
-    if (!str_contains($fieldText, " Ölfässer mitnehmen.")) {
+    if (!str_contains($fieldText, " mitnehmen")) {
         $ntfy->sendErrorMessage(sprintf('Keine Ölfässer zum mitnehmen vorhanden bei deinem User "%s" in Welt "%s" auf Feld "%s"!', $username, $world, $field));
         sleep(rand(2, 5));
         $client->request('GET', sprintf('https://%s.freewar.de/freewar/internal/logout.php', $world));
