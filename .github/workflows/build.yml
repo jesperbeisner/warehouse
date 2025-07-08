@@ -7,28 +7,28 @@ on:
 
 jobs:
     docker-build:
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-latest
 
         steps:
-            -   uses: actions/checkout@v3
+            -   uses: actions/checkout@v4
 
             -   name: "Set Docker Meta"
                 id: meta
-                uses: docker/metadata-action@v4
+                uses: docker/metadata-action@v5
                 with:
                     images: "ghcr.io/jesperbeisner/warehouse"
                     flavor: latest=true
                     tags: type=semver,pattern={{version}}
 
             -   name: "Login To Image Repository"
-                uses: docker/login-action@v2
+                uses: docker/login-action@v3
                 with:
                     registry: "ghcr.io"
                     username: ${{ github.actor }}
-                    password: ${{ secrets.WAREHOUSE_GHCR_TOKEN }}
+                    password: ${{ secrets.GHCR_TOKEN }}
 
             -   name: "Build And Push"
-                uses: docker/build-push-action@v3
+                uses: docker/build-push-action@v6
                 with:
                     context: .
                     file: "Dockerfile"
