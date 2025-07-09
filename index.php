@@ -41,12 +41,20 @@ try {
     ]);
 
     $client->request('GET', sprintf('https://%s.freewar.de/freewar/', $world));
+    $client->wait(1);
 
     $client->findElement(WebDriverBy::cssSelector('input[name="name"]'))->sendKeys($username);
+    $client->wait(1);
+
     $client->findElement(WebDriverBy::cssSelector('input[name="password"]'))->sendKeys($password);
+    $client->wait(1);
+
     $client->findElement(WebDriverBy::cssSelector('input[name="submit"]'))->click();
+    $client->wait(2);
 
     $client->request('GET', sprintf('https://%s.freewar.de/freewar/internal/main.php', $world));
+    $client->wait(2);
+
     sleep(rand(2, 5));
     $field = trim($client->findElement(WebDriverBy::cssSelector('td.mainheader'))->getText());
 
@@ -61,8 +69,8 @@ try {
     sleep(rand(2, 5));
     $fieldText = trim($client->findElement(WebDriverBy::cssSelector('td.areadescription'))->getText());
 
-    if (!str_contains($fieldText, " mitnehmen")) {
-        $ntfy->sendErrorMessage(sprintf('Keine Ölfässer zum mitnehmen vorhanden bei deinem User "%s" in Welt "%s" auf Feld "%s"!', $username, $world, $field));
+    if (!str_contains($fieldText, "mitnehmen")) {
+        $ntfy->sendErrorMessage(sprintf('Keine Ölfässer zum mitnehmen vorhanden in Welt "%s"!', $world));
         sleep(rand(2, 5));
         $client->request('GET', sprintf('https://%s.freewar.de/freewar/internal/logout.php', $world));
 
@@ -72,7 +80,7 @@ try {
     $takeBarrelsLinkText = $client->findElement(WebDriverBy::cssSelector('td.areadescription a'))->getText();
     $client->findElement(WebDriverBy::cssSelector('td.areadescription a'))->click();
     sleep(rand(2, 5));
-    $ntfy->sendSuccessMessage(sprintf('Du hast erfolgreich %s Fässer Öl mit deinem User "%s" in Welt "%s" mitgenommen!', str_replace(' Ölfässer mitnehmen.', '', $takeBarrelsLinkText), $username, $world));
+    $ntfy->sendSuccessMessage(sprintf('Du hast erfolgreich Öl in Welt "%s" mitgenommen!', $world));
     sleep(rand(2, 5));
     $client->request('GET', sprintf('https://%s.freewar.de/freewar/internal/logout.php', $world));
 } catch (Throwable $e) {
